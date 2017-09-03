@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwatsAppServer", "TwatsAppServer\TwatsAppServer.csproj", "{5ABB1E6B-CE2A-4581-935C-D582BDC16851}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwatsAppCore", "TwatsAppCore\TwatsAppCore.csproj", "{FDFB29CA-F6AA-45D4-AB71-16D75BF763F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{5ABB1E6B-CE2A-4581-935C-D582BDC16851}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ABB1E6B-CE2A-4581-935C-D582BDC16851}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ABB1E6B-CE2A-4581-935C-D582BDC16851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDFB29CA-F6AA-45D4-AB71-16D75BF763F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDFB29CA-F6AA-45D4-AB71-16D75BF763F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDFB29CA-F6AA-45D4-AB71-16D75BF763F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDFB29CA-F6AA-45D4-AB71-16D75BF763F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
