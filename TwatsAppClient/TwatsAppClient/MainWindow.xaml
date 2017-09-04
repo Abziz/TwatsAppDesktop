@@ -3,10 +3,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TwatsAppClient"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525" FontFamily="/TwatsAppClient;component/fonts/#Varela Round" FontSize="14">
     <Grid>
+        <Grid x:Name="MainGrid">
         
+            
+            
+            
+        </Grid>
+        
+        
+        
+        <Grid Visibility="Hidden" x:Name="Spinner">
+            <Border Background="white" Opacity="0.5">
+            </Border>
+            <fa:FontAwesome Icon="Cog"  FontSize="32" Spin="True" Foreground="Gray" SpinDuration="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
     </Grid>
 </Window>

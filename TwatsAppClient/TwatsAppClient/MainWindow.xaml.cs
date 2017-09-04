@@ -23,6 +23,7 @@ namespace TwatsAppClient
         public MainWindow()
         {
             InitializeComponent();
+            new LoginWindow().ShowDialog();
         }
     }
 }
