@@ -24,11 +24,13 @@ namespace TwatsAppServer.Provider
                 {
                     var claims = new List<Claim>()
                     {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim("UserId", user.Id.ToString())
+                        new Claim("userName", user.UserName),
+                        new Claim("userId", user.Id.ToString()),
+                        new Claim("firstName",user.FirstName),
+                        new Claim("lastName",user.LastName)
                     };
                     ClaimsIdentity oAutIdentity = new ClaimsIdentity(claims, Startup.OAuthOptions.AuthenticationType);
-                    context.Validated(new AuthenticationTicket(oAutIdentity, new AuthenticationProperties() { }));
+                    context.Validated(new AuthenticationTicket(oAutIdentity, new AuthenticationProperties(){ }));
                 }
                 else
                 {
@@ -42,6 +44,15 @@ namespace TwatsAppServer.Provider
             if (context.ClientId == null)
             {
                 context.Validated();
+            }
+            return Task.FromResult<object>(null);
+        }
+
+        public override Task TokenEndpoint(OAuthTokenEndpointContext context)
+        {
+            foreach (var claim in context.Identity.Claims)
+            {
+                context.AdditionalResponseParameters.Add(claim.Type, claim.Value);
             }
             return Task.FromResult<object>(null);
         }

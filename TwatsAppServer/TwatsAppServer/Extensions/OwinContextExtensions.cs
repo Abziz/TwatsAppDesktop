@@ -10,7 +10,7 @@ namespace TwatsAppServer.Extensions
     {
         public static string GetUserId(this IOwinContext ctx)
         {            
-            var claim = ctx.Authentication.User.Claims.FirstOrDefault(c => c.Type == "UserId");
+            var claim = ctx.Authentication.User.Claims.FirstOrDefault(c => c.Type == "userId");
             return claim?.Value;
         }
     }

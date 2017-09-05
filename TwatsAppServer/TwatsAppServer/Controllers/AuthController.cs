@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using TwatsAppCore.Models;
+using TwatsAppCore.Models.Binding;
 using TwatsAppCore.Services;
 
 namespace TwatsAppServer.Controllers
@@ -16,7 +12,7 @@ namespace TwatsAppServer.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("register")]
-        public async Task<IHttpActionResult> Register([FromBody] UserBindingModel user)
+        public async Task<IHttpActionResult> Register([FromBody] UserRegistrationBindingModel user)
         {
             try
             {
@@ -32,8 +28,8 @@ namespace TwatsAppServer.Controllers
                         return BadRequest("Username is allready taken");
                     }
                     await UserService.RegisterUser(user);
+                    return Ok();
                 }
-                return Ok();
             }
             catch (Exception e)
             {

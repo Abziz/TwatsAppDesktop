@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace TwatsAppClient.extensions
+namespace TwatsAppClient.Helpers
 {
     public static class SpinnerExtensions
     {

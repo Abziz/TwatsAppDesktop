@@ -1,12 +1,7 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Security.Claims;
 
 namespace TwatsAppCore.Models
 {
@@ -50,15 +45,13 @@ namespace TwatsAppCore.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public virtual TwatsAppUser Sender { get; set; }
+        public virtual TwatsAppUser From { get; set; }
         [Required]
-        public virtual TwatsAppUser Receiver { get; set; }
+        public virtual TwatsAppUser To { get; set; }
         [Required]
-        public DateTimeOffset TimeSent { get; set; } = DateTimeOffset.Now;
+        public DateTimeOffset DispatchedAt { get; set; } = DateTimeOffset.Now;
         [Required]
-        public bool Received { get; set; } = false;
-        [Required]
-        public DateTimeOffset TimeReceived { get; set; } = DateTimeOffset.Now;
+        public bool Seen { get; set; } = false;
         [Required]
         [StringLength(512,MinimumLength =1)]
         public string Content { get; set; }

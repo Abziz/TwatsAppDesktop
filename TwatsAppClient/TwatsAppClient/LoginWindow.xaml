@@ -9,8 +9,8 @@
     <Grid>
         <Grid x:Name="MainGrid" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -19,30 +19,35 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,5" Background="#25D366" VerticalAlignment="Stretch">
-                <TextBlock FontSize="32" Foreground="white" Text="TwatsApp" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock FontSize="50" Foreground="white" Text="TwatsApp" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Grid.BitmapEffect>
                     <DropShadowBitmapEffect Color="Black" Direction="270" ShadowDepth="1" Softness="0.2" Opacity="0.5"/>
                 </Grid.BitmapEffect>
             </Grid>
 
-            <StackPanel Margin="25,5,5,5" Grid.Row="1" HorizontalAlignment="Left"  Width="200" >
-                <Label Content="User name" Opacity="0.5"></Label>
-                <TextBox x:Name="Username" Margin="0,0,0,5"/>
-                <Label  Content="Password" Opacity="0.5"></Label>
-                <PasswordBox x:Name="Password" Margin="0,0,0,5"/>
+            <StackPanel Margin="25,5,5,5" Grid.Row="1" DataContext="{Binding UserForm}">
+                <Label Content="User name" Opacity="0.5"/>
+                <TextBox Text="{Binding Path=UserName}" Margin="0,0,0,5"/>
+                <Label  Content="Password" Opacity="0.5"/>
+                <PasswordBox  x:Name="Password" Margin="0,0,0,5"/>
                 <StackPanel x:Name="RegisterFields" Visibility="Collapsed">
-                    <Label Content="Confirm password" Opacity="0.5"></Label>
+                    <Label Content="Confirm password" Opacity="0.5"/>
                     <PasswordBox x:Name="ConfirmPassword" Margin="0,0,0,5"/>
-                    <Label Content="First name" Opacity="0.5"></Label>
-                    <TextBox x:Name="FirstName" Margin="0,0,0,5"/>
-                    <Label  Content="Last name" Opacity="0.5"></Label>
-                    <TextBox x:Name="LastName" Margin="0,0,0,5"/>
+                    <Label Content="First name" Opacity="0.5"/>
+                    <TextBox Text="{Binding Path=FirstName}" Margin="0,0,0,5"/>
+                    <Label  Content="Last name" Opacity="0.5"/>
+                    <TextBox Text="{Binding Path=LastName}" Margin="0,0,0,5"/>
                 </StackPanel>
                 <Button x:Name="LoginBtn" Margin="0,5,0,5" Content="Login" FontFamily="/TwatsAppClient;component/fonts/#Varela Round" Style="{StaticResource btn-success}" Click="LoginBtn_ClickAsync"/>
                 <Button x:Name="LoginSwitch" Margin="0,0,0,5" FontSize="12" Content="I don't have an account" FontFamily="/TwatsAppClient;component/fonts/#Varela Round" Style="{StaticResource btn-primary}" Click="SwitchLogin"/>
             </StackPanel>
+            <StackPanel Margin="25,5,25,5" Grid.Row="1" Grid.Column="1" Opacity="0.75">
+                <Label x:Name="AlertLabel" FontSize="18" HorizontalAlignment="Left" Content="Oops!" Visibility="Hidden"/>
+                <TextBlock x:Name="AlertContent" Padding="5,0,0,0" FontSize="12" TextWrapping="Wrap" />
+            </StackPanel>
+            <Image Source="/img/Spongebob_PNG.png" Opacity="0.15" Margin="59,178,-9,-187" Grid.Row="1" Grid.Column="1"/>
         </Grid>
-        
+
         <Grid Visibility="Hidden" x:Name="Spinner">
             <Border Background="white" Opacity="0.5"/>
             <fa:FontAwesome Icon="Cog"  FontSize="32" Spin="True" Foreground="Gray" SpinDuration="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>

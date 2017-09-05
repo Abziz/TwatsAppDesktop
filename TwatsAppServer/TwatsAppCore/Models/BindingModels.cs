@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwatsAppCore.Models
+namespace TwatsAppCore.Models.Binding
 {
-    public class UserBindingModel
+    public class UserRegistrationBindingModel
     {
         [Required]
-        [Display(Name ="User name")]
+        [Display(Name = "Username")]
         public string UserName { get; set; }
 
         [Required]
@@ -30,7 +30,7 @@ namespace TwatsAppCore.Models
         public string LastName { get; set; }
     }
 
-    public class MessageBindingModel
+    public class SendMessageBindingModel
     {
         [Required]
         public int SenderId { get; set; }
@@ -41,4 +41,6 @@ namespace TwatsAppCore.Models
         [Required]
         public string Content { get; set; }
     }
+
+    
 }
