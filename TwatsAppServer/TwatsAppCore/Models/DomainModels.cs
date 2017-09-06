@@ -51,7 +51,7 @@ namespace TwatsAppCore.Models
         [Required]
         public DateTimeOffset DispatchedAt { get; set; } = DateTimeOffset.Now;
         [Required]
-        public bool Seen { get; set; } = false;
+        public bool NotRead { get; set; } = true;
         [Required]
         [StringLength(512,MinimumLength =1)]
         public string Content { get; set; }

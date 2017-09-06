@@ -58,24 +58,4 @@ namespace TwatsAppClient.Helpers
         }
     }
 
-    public class InverseBooleanToVisibilityConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is Boolean && (bool)value)
-            {
-                return Visibility.Collapsed;
-            }
-            return Visibility.Visible;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is Visibility && (Visibility)value == Visibility.Visible)
-            {
-                return false;
-            }
-            return true;
-        }
-    }
 }

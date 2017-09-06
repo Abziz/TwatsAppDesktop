@@ -12,7 +12,7 @@ namespace TwatsAppCore.Models.Dtos
         public UserDto To { get; set; }
         public string Content { get; set; }
         public DateTimeOffset DispatchedAt { get; set; }
-        public bool Seen { get; set; }
+        public bool NotRead { get; set; }
 
         public MessageDto(Message msg)
         {
@@ -20,7 +20,7 @@ namespace TwatsAppCore.Models.Dtos
             To = new UserDto(msg.To);
             Content = msg.Content;
             DispatchedAt = msg.DispatchedAt;
-            Seen = msg.Seen;
+            NotRead = msg.NotRead;
         }
     }
 

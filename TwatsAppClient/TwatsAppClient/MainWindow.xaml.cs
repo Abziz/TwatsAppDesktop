@@ -92,17 +92,16 @@ namespace TwatsAppClient
 
         private async Task InitializeApp()
         {
-             
+            Spinner.Work();
             await GetContacts(x => { });
+
+            Spinner.Stop();
         }
 
 
         public async Task GetContacts(Action<FlurlHttpException> error)
         {
-            if( Contacts.Count != 0)
-            {
-                Contacts.Clear();
-            }
+            Contacts.Clear();   
             try
             {
                 var contacts = await API.Chat.GetContacts.WithOAuthBearerToken(Properties.Settings.Default.AccessToken).GetJsonAsync<List<ContactDto>>();

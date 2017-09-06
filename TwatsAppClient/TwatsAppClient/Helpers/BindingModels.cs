@@ -20,7 +20,7 @@ namespace TwatsAppClient.Helpers
     {
         public string Content { get; set; }
         public DateTimeOffset DispatchedAt { get; set; }
-        public bool Seen { get; set; }
+        public bool NotRead { get; set; }
 
     }
 
@@ -38,7 +38,7 @@ namespace TwatsAppClient.Helpers
         public UserDto To { get; set; }
         public string Content { get; set; }
         public DateTimeOffset DispatchedAt { get; set; }
-        public bool Seen { get; set; }
+        public bool NotRead { get; set; }
     }
 
     public class ContactDto
