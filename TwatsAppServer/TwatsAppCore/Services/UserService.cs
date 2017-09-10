@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using static TwatsAppCore.Helpers.Utils;
 using TwatsAppCore.Models;
 using System;
-using System.Collections;
 using TwatsAppCore.Models.Binding;
 
 namespace TwatsAppCore.Services
@@ -13,22 +12,20 @@ namespace TwatsAppCore.Services
 
     public class UserService : BaseService
     {
+        /// <summary>
+        /// Finds a  user by given id
+        /// </summary>
+        /// <param name="id">The user's id</param>
+        /// <returns>The user</returns>
         public async Task<TwatsAppUser> FindById(int id)
         {
             return await db.Users.Where(u => u.Id.Equals(id)).FirstOrDefaultAsync();
         }
-        public async Task<TwatsAppUser> FindById(string id)
-        {
-            return await db.Users.Where(u => u.Id.ToString().Equals(id)).FirstOrDefaultAsync();
-        }
-        public async Task<List<TwatsAppUser>> GetAllUsers()
-        {
-            return await db.Users.ToListAsync();
-        }
-        public async Task<List<TwatsAppUser>> GetAllNewUsers(DateTimeOffset LastChecked)
-        {
-            return await db.Users.Where(u => u.TimeCreated > LastChecked).ToListAsync();
-        }
+        /// <summary>
+        /// Register a user to the server
+        /// </summary>
+        /// <param name="userModel">The user's information</param>
+        /// <returns>The newly registered user</returns>
         public async Task<TwatsAppUser> RegisterUser(UserRegistrationBindingModel userModel)
         {
             TwatsAppUser user = new TwatsAppUser
@@ -42,6 +39,12 @@ namespace TwatsAppCore.Services
             await db.SaveChangesAsync();
             return user;
         }
+        /// <summary>
+        /// Find a user by username and password
+        /// </summary>
+        /// <param name="userName">the user's username</param>
+        /// <param name="password">the user's password</param>
+        /// <returns>The user</returns>
         public async Task<TwatsAppUser> FindByCredentials(string userName, string password)
         {
             string passwordHash = GenerateSHA256String(password);

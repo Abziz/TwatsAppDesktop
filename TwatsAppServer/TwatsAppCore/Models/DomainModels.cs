@@ -44,14 +44,22 @@ namespace TwatsAppCore.Models
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
         public virtual TwatsAppUser From { get; set; }
+
         [Required]
         public virtual TwatsAppUser To { get; set; }
+
         [Required]
         public DateTimeOffset DispatchedAt { get; set; } = DateTimeOffset.Now;
+
         [Required]
-        public bool NotRead { get; set; } = true;
+        public bool SeenBySender { get; set; } = false;
+
+        [Required]
+        public bool SeenByReceiver { get; set; } = false;
+
         [Required]
         [StringLength(512,MinimumLength =1)]
         public string Content { get; set; }

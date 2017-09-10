@@ -9,7 +9,7 @@ namespace TwatsAppCore.Services
 {
     public class BaseService : IDisposable
     {
-        protected TwatsAppContext db { get; } = new TwatsAppContext();
+        protected TwatsAppContext db = new TwatsAppContext();
 
         public void Dispose()
         {

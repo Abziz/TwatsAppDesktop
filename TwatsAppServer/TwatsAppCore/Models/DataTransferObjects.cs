@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TwatsAppCore.Models.Dtos
 {
@@ -12,7 +9,7 @@ namespace TwatsAppCore.Models.Dtos
         public UserDto To { get; set; }
         public string Content { get; set; }
         public DateTimeOffset DispatchedAt { get; set; }
-        public bool NotRead { get; set; }
+        
 
         public MessageDto(Message msg)
         {
@@ -20,7 +17,6 @@ namespace TwatsAppCore.Models.Dtos
             To = new UserDto(msg.To);
             Content = msg.Content;
             DispatchedAt = msg.DispatchedAt;
-            NotRead = msg.NotRead;
         }
     }
 
@@ -28,13 +24,14 @@ namespace TwatsAppCore.Models.Dtos
     {
         public UserDto User { get; set; }
         public MessageDto LastMessage { get; set; }
+        public ICollection<MessageDto> Messages { get; set; }
     }
 
     public class UserDto
     {
         public int Id { get; set; }
         public string FullName { get; set; }
-        DateTimeOffset Joined { get; set; }
+        public DateTimeOffset Joined { get; set; }
         public UserDto() { }
         public UserDto(TwatsAppUser user)
         {

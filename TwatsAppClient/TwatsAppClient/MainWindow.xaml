@@ -7,11 +7,16 @@
         xmlns:p="clr-namespace:TwatsAppClient.Properties"
         xmlns:helpers="clr-namespace:TwatsAppClient.Helpers"
         mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Title="{Binding Source={x:Static p:Settings.Default},Path=FullName,Mode=OneWay}"
-        Height="600" Width="800" FontFamily="/TwatsAppClient;component/fonts/#Varela Round" FontSize="14">
+        Height="600" Width="800" MinWidth="400" FontFamily="/TwatsAppClient;component/fonts/#Varela Round" FontSize="14">
     <Window.Resources>
         <helpers:BooleanToVisibilityConverter x:Key="BoolToVisibility" />
         <helpers:LastMessageTimeConverter x:Key="LastSeenConverter" />
+        <helpers:FromFlipConverter x:Key="FromFlipConverter"/>
+        <helpers:FromColorConverter x:Key="FromColorConverter"/>
+        <helpers:FromAlignmentConverter x:Key="FromAlignmentConverter"/>
+        <helpers:FromColumnConverter x:Key="FromColumnConverter"/>
     </Window.Resources>
     <Grid>
         <Grid x:Name="MainGrid" Background="#ECE5DD">
@@ -21,17 +26,96 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition MaxWidth="300" Width="0.5*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+             
+                <!-- Conversation -->
+                <Grid Grid.Column="1">
+                    <Grid.Background>
+                        <ImageBrush  ImageSource="img/chat_bg.png" TileMode="Tile" ViewportUnits="Absolute" Viewport="0,0,550,999" Opacity="0.15"/>
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <!--Messages -->
+                    <ScrollViewer x:Name="ConversationScrollViewer">
+                        <ItemsControl x:Name="ConversationViewer" Grid.Column="0" ItemsSource="{Binding Messages}" >
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Bottom"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="5" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="{Binding From,Converter={StaticResource FromColumnConverter}}" Grid.ColumnSpan="2">
+                                            <Grid.BitmapEffect>
+                                                <DropShadowBitmapEffect Color="Black" Direction="270" ShadowDepth="1" Softness="0.2" Opacity="0.5"/>
+                                            </Grid.BitmapEffect>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Border x:Name="TextContainer" CornerRadius="10" Grid.Row="0"  Grid.RowSpan="2" Padding="15,15,10,15" Background="{Binding From,Converter={StaticResource FromColorConverter}}">
+                                                <TextBlock VerticalAlignment="Center" FontSize="12"  TextWrapping="Wrap" FontFamily="/TwatsAppClient;component/fonts/#Varela Round" Opacity="0.6">
+                                                    <Run Text="{Binding From.FullName}"/>
+                                                    <Run Text=":"/>
+                                                    <LineBreak/>
+                                                    <Run FontSize="14" Text="{Binding Content}"/>
+                                                </TextBlock>
+                                            </Border>
+                                            <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,4,3" Text="{Binding DispatchedAt,Converter={StaticResource LastSeenConverter}}" FontSize="10" Opacity="0.4"/>
+                                            <Path  HorizontalAlignment="{Binding From,Converter={StaticResource FromAlignmentConverter}}" Grid.Row="2"  Data="M 10,-1 5,10 20,-1 10,-1" Fill="{Binding ElementName=TextContainer,Path=Background}">
+                                                <Path.RenderTransform>
+                                                    <ScaleTransform ScaleX="{Binding From, Converter={StaticResource FromFlipConverter}}"/>
+                                                </Path.RenderTransform>
+                                            </Path>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <!-- Message INput -->
+                    <Grid Grid.Row="1" Background="White">
+                        <Grid.BitmapEffect>
+                            <DropShadowBitmapEffect Color="Black" Direction="90" ShadowDepth="1" Softness="0.2" Opacity="0.5"/>
+                        </Grid.BitmapEffect>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="MessageInput"  Grid.Column="0" Margin="5" AcceptsReturn="True" AcceptsTab="True" KeyDown="CheckCtrlEnter" >
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=ContactList, Path=SelectedItem}" Value="{x:Null}">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                        <Button  IsEnabled="{Binding ElementName=MessageInput,Path=Text.Length}" x:Name="SendMessageBtn" Grid.Column="1" Margin="5" Cursor="Hand"  fa:Awesome.Content="Send"  Style="{StaticResource btn-primary}" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome" Click="SendMessageBtnClicked"/>
+                    </Grid>
+                    
 
-                <ListBox Padding="0" Margin="0" HorizontalContentAlignment="Stretch"  BorderThickness="0" ItemsSource="{Binding Contacts}">
+                </Grid>
+                <!--Contacts-->
+                <ListBox x:Name="ContactList" Padding="0" Margin="0" HorizontalContentAlignment="Stretch"  BorderThickness="0" ItemsSource="{Binding Contacts}" SelectionChanged="ContactSelected">
                     <ListBox.BitmapEffect>
                         <DropShadowBitmapEffect Color="Black" Direction="0" ShadowDepth="1" Softness="0.2" Opacity="0.5"/>
                     </ListBox.BitmapEffect>
-                    
                     <ListBox.ItemTemplate>
-
                         <DataTemplate>
                             <Grid Margin="5" >
                                 <Grid.RowDefinitions>
@@ -41,36 +125,13 @@
                                 <TextBlock FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding User.FullName}"/>
                                 <TextBlock FontSize="12" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0.5" Text="{Binding LastMessage.DispatchedAt, Converter={StaticResource LastSeenConverter}}"/>
                                 <TextBlock MaxWidth="250" Grid.Row="1" FontSize="12" VerticalAlignment="Bottom" HorizontalAlignment="Left" Opacity="0.75" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Text="{Binding LastMessage.Content}"/>
-                                <fa:FontAwesome Grid.Row="1" HorizontalAlignment="Right" Icon="Circle" Opacity="0.5" Foreground="blue" Visibility="{Binding LastMessage.NotRead,Converter={StaticResource BoolToVisibility}}" />
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                
-                <Grid Grid.Column="1">
-                    <Grid.Background>
-                        <ImageBrush  ImageSource="img/chat_bg.png" TileMode="Tile" ViewportUnits="Absolute" Viewport="0,0,550,999" Opacity="0.15"/>
-                    </Grid.Background>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="50"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" VerticalAlignment="Stretch">
-                    </StackPanel>
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="50"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Margin="5"></TextBox>
-                        <Button  Grid.Column="1" Margin="5" Cursor="Hand"  fa:Awesome.Content="Send"  Style="{StaticResource btn-primary}" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome"/>
-                    </Grid>
-                    
-                </Grid>
-                
             </Grid>
-            
-            
+
+            <!--Logo -->
             <Grid Grid.Row="0" Margin="0" Grid.ColumnSpan="2" Background="#25D366" VerticalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -81,13 +142,13 @@
                 </Grid.BitmapEffect>
                 <TextBlock Grid.ColumnSpan="2" FontSize="25" Foreground="white" Text="TwatsApp" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Button Cursor="Hand"  fa:Awesome.Content="SignOut" Grid.Column="1" Background="Transparent" BorderThickness="0" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome" Click="Signout"/>
-                
+
             </Grid>
-            
+
         </Grid>
-        
-        
-        
+
+
+        <!-- Spinner -->
         <Grid Visibility="Hidden" x:Name="Spinner">
             <Border Background="white" Opacity="0.5">
             </Border>

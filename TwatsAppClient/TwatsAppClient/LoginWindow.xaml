@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
         Title="TwatsApp Login/Register" Background="#ECE5DD" Height="600" Width="600" MinHeight="600" MinWidth="600" FontFamily="/TwatsAppClient;component/fonts/#Varela Round" >
     <Grid>
@@ -38,7 +39,7 @@
                     <Label  Content="Last name" Opacity="0.5"/>
                     <TextBox Text="{Binding Path=LastName}" Margin="0,0,0,5"/>
                 </StackPanel>
-                <Button x:Name="LoginBtn" Margin="0,5,0,5" Content="Login" FontFamily="/TwatsAppClient;component/fonts/#Varela Round" Style="{StaticResource btn-success}" Click="LoginBtn_ClickAsync"/>
+                <Button x:Name="LoginBtn" Margin="0,5,0,5" Content="Login" FontFamily="/TwatsAppClient;component/fonts/#Varela Round" Style="{StaticResource btn-success}" Click="LoginBtnClick"/>
                 <Button x:Name="LoginSwitch" Margin="0,0,0,5" FontSize="12" Content="I don't have an account" FontFamily="/TwatsAppClient;component/fonts/#Varela Round" Style="{StaticResource btn-primary}" Click="SwitchLogin"/>
             </StackPanel>
             <StackPanel Margin="25,5,25,5" Grid.Row="1" Grid.Column="1" Opacity="0.75">

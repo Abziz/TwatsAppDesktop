@@ -4,8 +4,16 @@ using System.Text;
 
 namespace TwatsAppCore.Helpers
 {
+    /// <summary>
+    /// some util functions I didnt know where to put
+    /// </summary>
     static class Utils
     {
+        /// <summary>
+        /// Generates a SHA256 encoded string , do not store raw passwords in data base!
+        /// </summary>
+        /// <param name="inputString">the string to encode</param>
+        /// <returns>encoded string</returns>
         public static string GenerateSHA256String(string inputString)
         {
             byte[] data = Encoding.UTF8.GetBytes(inputString);
@@ -14,13 +22,6 @@ namespace TwatsAppCore.Helpers
                 byte[] result = shaM.ComputeHash(data);
                 return Convert.ToBase64String(result);
             }
-        }
-
-        public static void Swap<T>(ref T lhs, ref T rhs)
-        {
-            T temp = lhs;
-            lhs = rhs;
-            rhs = temp;
         }
     }
 }

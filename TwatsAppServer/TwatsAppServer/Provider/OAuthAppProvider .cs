@@ -8,10 +8,17 @@ using TwatsAppCore.Services;
 
 namespace TwatsAppServer.Provider
 {
+    /// <summary>
+    /// This will be called when an http request is sent to the server
+    /// It will validate the user, and give it some claims (some "cookies" information)
+    /// </summary>
     public class OAuthAppProvider : OAuthAuthorizationServerProvider
     {
-        
-
+        /// <summary>
+        /// This will grant a user who logs in successfully an access token to use with his next requests for 2 days
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
 
@@ -48,6 +55,11 @@ namespace TwatsAppServer.Provider
             return Task.FromResult<object>(null);
         }
 
+        /// <summary>
+        /// Here we can add aditional information for the access token response
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
         {
             foreach (var claim in context.Identity.Claims)

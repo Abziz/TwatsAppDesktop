@@ -4,8 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// some custom exceptions , not really needed
+/// </summary>
 namespace TwatsAppClient.Helpers
 {
+    
     public class LoginException : Exception
     {
         public LoginException() { }

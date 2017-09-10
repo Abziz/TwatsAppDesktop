@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TwatsAppCore.Models.Binding
 {
@@ -33,14 +29,15 @@ namespace TwatsAppCore.Models.Binding
     public class SendMessageBindingModel
     {
         [Required]
-        public int SenderId { get; set; }
+        public int From { get; set; }
 
         [Required]
-        public int ReceiverId { get; set; }
+        public int To { get; set; }
 
         [Required]
         public string Content { get; set; }
+
+        public DateTimeOffset DispatchedAt { get; set; }
     }
 
-    
 }

@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using TwatsAppClient.Helpers;
+using TwatsAppClient.Services;
 
 namespace TwatsAppClient
 {
@@ -13,69 +14,14 @@ namespace TwatsAppClient
     public partial class LoginWindow : Window
     {
         private bool isLogin = true;
-        public UserBindingModel UserForm { get; set; } = new UserBindingModel();
+        public AccountBindingModel UserForm { get; set; } = new AccountBindingModel();
+
         public LoginWindow()
         {
             InitializeComponent();
-            DataContext = this;
         }
 
-
-        public static async Task Login(UserBindingModel user,Action<FlurlHttpException> error)
-        {
-            try
-            {
-                var response = await API.Account.Login.PostUrlEncodedAsync(new { username = user.UserName, password = user.Password, grant_type = "password" }).ReceiveJson();
-                Properties.Settings.Default.Username = user.UserName;
-                Properties.Settings.Default.Password = user.Password;
-                Properties.Settings.Default.AccessToken = response.access_token;
-                Properties.Settings.Default.ExpiresIn = DateTime.Now.AddSeconds(response.expires_in - 60);
-                Properties.Settings.Default.UserId = int.Parse(response.userId);
-                Properties.Settings.Default.FullName = $"{response.firstName} {response.lastName}";
-                Properties.Settings.Default.Save();
-            }
-            catch (FlurlHttpTimeoutException)
-            {
-                throw new TimeoutException("The request has timed out.");
-            }
-            catch (FlurlHttpException ex)
-            {
-                error(ex);
-            }
-            catch (Exception)
-            {
-                throw new Exception("Something weird happend.");
-            }
-        }
-
-
-        private async Task Register(UserBindingModel user, Action<FlurlHttpException> error)
-        {
-            try
-            {
-                var response = await API.Account.Register.PostJsonAsync(new
-                {
-                    username = user.UserName,
-                    password = user.Password,
-                    confirmPassword = user.ConfirmPassword,
-                    firstName = user.FirstName,
-                    lastName = user.LastName
-                });
-            }
-            catch (FlurlHttpTimeoutException)
-            {
-                throw new TimeoutException("The request has timed out.");
-            }
-            catch (FlurlHttpException ex)
-            {
-                error(ex);
-            }
-            catch (Exception)
-            {
-                throw new Exception("Something weird happend.");
-            }
-        }
-        
+        /* error and success callbacks */
         private void HandleRegisterError(FlurlHttpException ex)
         {
             switch (ex.Call.HttpStatus)
@@ -83,7 +29,7 @@ namespace TwatsAppClient
                 case HttpStatusCode.BadRequest:
                     var response = ex.GetResponseJson();
                     AlertContent.Text = string.Empty;
-                    if (response.message == API.ModelStateErrorMessage)
+                    if (response.message == TwatsAppService.API.ModelStateErrorMessage)
                     {
                         foreach (var error in response.modelState)
                         {
@@ -99,16 +45,15 @@ namespace TwatsAppClient
                     }
                     break;
                 case HttpStatusCode.InternalServerError:
-                    AlertContent.Text = API.GenericInternalServerError;
+                    AlertContent.Text = TwatsAppService.API.GenericInternalServerErrorMessage;
                     break;
                 default:
-                    AlertContent.Text = API.CrazyShitError;
+                    AlertContent.Text = TwatsAppService.API.CrazyShitErrorMessage;
                     break;
             }
             AlertLabel.Visibility = Visibility.Visible;
 
         }
-
         private void HandleLoginError(FlurlHttpException ex)
         {
             switch (ex.Call.HttpStatus)
@@ -118,16 +63,17 @@ namespace TwatsAppClient
                     AlertContent.Text = response.error_description;
                     break;
                 case HttpStatusCode.InternalServerError:
-                    AlertContent.Text = API.GenericInternalServerError;
+                    AlertContent.Text = TwatsAppService.API.GenericInternalServerErrorMessage;
                     break;
                 default:
-                    AlertContent.Text = API.CrazyShitError;
+                    AlertContent.Text = TwatsAppService.API.CrazyShitErrorMessage;
                     break;
             }
             AlertLabel.Visibility = Visibility.Visible;
             throw new LoginException();
         }
 
+        /* For Event Handlers */
         private void SwitchLogin(object sender, RoutedEventArgs e)
         {
             if (isLogin)
@@ -146,8 +92,7 @@ namespace TwatsAppClient
             AlertContent.Text = string.Empty;
             isLogin = !isLogin;
         }
-
-        private async void LoginBtn_ClickAsync(object sender, RoutedEventArgs e)
+        private async void LoginBtnClick(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -156,9 +101,10 @@ namespace TwatsAppClient
                 if (!isLogin)
                 {
                     UserForm.ConfirmPassword = ConfirmPassword.Password;
-                    await Register(UserForm, HandleRegisterError);
+                    await TwatsAppService.Register(UserForm, HandleRegisterError);
                 }
-                await Login(UserForm, HandleLoginError);
+                await TwatsAppService.Login(UserForm, HandleLoginError);
+                DialogResult = true;
                 Close();
             }
             catch (LoginException)

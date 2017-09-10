@@ -7,6 +7,9 @@ using System.Windows.Controls;
 
 namespace TwatsAppClient.Helpers
 {
+    /// <summary>
+    /// nice thing to have when wokring, takes a grid and makes it visible;
+    /// </summary>
     public static class SpinnerExtensions
     {
         public static void Work(this Grid grid)

@@ -36,9 +36,5 @@ namespace TwatsAppServer.Controllers
                 return InternalServerError(e);
             }
         }
-
-
-
-
     }
 }

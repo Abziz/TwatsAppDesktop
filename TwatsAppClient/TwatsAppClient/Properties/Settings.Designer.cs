@@ -93,5 +93,16 @@ namespace TwatsAppClient.Properties {
                 this["UserId"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTimeOffset LastRefresh {
+            get {
+                return ((global::System.DateTimeOffset)(this["LastRefresh"]));
+            }
+            set {
+                this["LastRefresh"] = value;
+            }
+        }
     }
 }

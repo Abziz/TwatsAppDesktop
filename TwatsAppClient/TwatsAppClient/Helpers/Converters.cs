@@ -9,7 +9,10 @@ using System.Windows.Data;
 
 namespace TwatsAppClient.Helpers
 {
-   public class BooleanToVisibilityConverter : IValueConverter
+    /// <summary>
+    /// Converts a boolean type to Visibility type
+    /// </summary>
+    public class BooleanToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -30,15 +33,18 @@ namespace TwatsAppClient.Helpers
         }
     }
 
+    /// <summary>
+    /// Converts a DateTimeOffset type to string type
+    /// </summary>
     public class LastMessageTimeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is DateTimeOffset)
+            if (value is DateTimeOffset time)
             {
-                var time = (DateTimeOffset)value;
-                if(time.Day.Equals(DateTimeOffset.Now.Day) && time.Month.Equals(DateTimeOffset.Now.Month) && time.Year.Equals(DateTimeOffset.Now.Year)) {
-                    return time.ToString("hh:mm");
+                if (time.Day.Equals(DateTimeOffset.Now.Day) && time.Month.Equals(DateTimeOffset.Now.Month) && time.Year.Equals(DateTimeOffset.Now.Year))
+                {
+                    return time.ToString("HH:mm");
                 }
                 else
                 {
@@ -50,11 +56,102 @@ namespace TwatsAppClient.Helpers
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is string) 
+            if (value is string)
             {
                 return DateTimeOffset.Parse((string)value);
             }
             return null;
+        }
+    }
+
+    /// <summary>
+    /// Converts a userDto to chat bubble color
+    /// </summary>
+    public class FromColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is UserDto user)
+            {
+                if (user.Id == Properties.Settings.Default.UserId)
+                {
+                    return "#DCF8C6";
+                }
+            }
+            return "#FFFFFF";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
+    /// Converts a userDto to Allignment direction
+    /// </summary>
+    public class FromAlignmentConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is UserDto user)
+            {
+                if (user.Id == Properties.Settings.Default.UserId)
+                {
+                    return HorizontalAlignment.Right;
+                }
+            }
+            return HorizontalAlignment.Left;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
+    /// Converts a userDto to integer specifing a column on a grid
+    /// </summary>
+    public class FromColumnConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is UserDto user)
+            {
+                if (user.Id == Properties.Settings.Default.UserId)
+                {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    /// <summary>
+    /// Converts a userDto to integer specifying the direction to flip
+    /// </summary>
+    public class FromFlipConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is UserDto user)
+            {
+                if (user.Id == Properties.Settings.Default.UserId)
+                {
+                    return -1;
+                }
+            }
+            return 1;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 
